@@ -1,0 +1,185 @@
+@charset "UTF-8";
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+/* 1) Базовая типографика */
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+  color: #111;
+}
+
+/* 2) Центрирующий контейнер: фиксируем комфортную ширину и боковые поля */
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 16px; /* чтобы контент не прилипал к краям на мобильных */
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #eee;
+  z-index: 100;
+  overflow: visible;
+}
+
+.header-inner{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+
+.logo {
+    font-weight:600;
+    font-size:24px;
+    letter-spacing: 0.02em;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+}
+
+/* 6) Все ссылки на сайте */
+a {
+  cursor: pointer; /* ← можно добавить сюда */
+}
+
+
+/* Общий стиль ссылок */
+.nav a {
+  text-decoration: none;
+  color: #111;
+  font-weight: 500;
+  font-size: 15px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.nav a:hover {
+  background: #f3f4f6;
+}
+
+
+
+/* Основное меню (Portfolio, Resume, Contact) */
+.nav ul {
+  list-style: none;
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Нижнее меню с соцсетями */
+.nav-bottom {
+  margin-top: 6px;
+  display: flex;
+  gap: 16px;
+  font-size: 13px;       /* меньше, чем 15px в основном меню */
+  opacity: 0.7;
+}
+
+
+.nav-bottom a {
+  color: #555;
+  font-weight: 400;       /* чуть тоньше */
+  font-size: 13px;        /* продублируем для надёжности */
+  transition: color 0.2s, opacity 0.2s;
+}
+
+.nav-bottom a:hover {
+  color: #000;
+  opacity: 1;
+  text-decoration: underline;
+}
+
+
+.burger {
+  display: none;
+  width: 40px; height: 40px;
+  border: 1px solid #e5e7eb; border-radius: 10px;
+  background: #fff;
+}
+
+.burger-box { display: inline-flex; flex-direction: column; gap: 6px; }
+.burger-line {
+  display: block; width: 18px; height: 2px; background: #111;
+}
+
+/* Плавный скролл к якорям */
+html { scroll-behavior: smooth; }
+
+/* Базовые отступы секций */
+.section {
+  padding: 80px 0; /* вертикальные отступы */
+  border-top: 1px solid #e5e7eb; /* тонкая разделительная линия, как у референса */
+}
+
+/* Чтобы якорь не прятался под фиксированной шапкой */
+:target {
+  scroll-margin-top: 80px; /* приблизительно высота шапки */
+}
+
+/* Заголовки секций */
+.section h2 {
+  font-size: 28px;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+.section p { color:#555; }
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+  .burger { 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    position: relative; 
+    z-index: 1100; /* кнопка над остальным, но ниже самого меню мы поставим ещё больше */
+  }
+
+  .nav {
+    position: absolute;
+    top: calc(100% + 8px);   /* сразу под .header-inner */
+    left: 0;
+    right: 0;
+    margin: 0 16px;          /* как у контейнера по краям */
+    background: #fff;
+    border: 1px solid #e5e7eb; 
+    border-radius: 12px;
+    padding: 12px;
+    display: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,.06);
+    z-index: 1200;           /* ← меню выше кнопки/шапки */
+    pointer-events: auto;    /* на всякий случай */
+  }
+
+  .nav ul { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 10px; 
+  }
+
+  .nav a{
+    display: block;          /* крупнее зона тапа */
+    width: 100%;
+    padding: 10px 12px;      /* чуть больше отступы для пальца */
+  }
+
+  .nav.is-open { display: block; }
+}
+
+
+
+
