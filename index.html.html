@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-inner">
+                <!-- NAME / LOGO -->
+                <div class="logo">ARSLAN GORYAEV</div>
+
+                <nav class="nav" id="site-nav" aria-label="main-navigation">
+                    <ul>
+                        <li><a href="#portfolio">Portfolio</a></li>
+                        <li><a href="#resume">Resume</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+
+                    <ul class="nav-bottom">
+                        <li><a href="https://www.instagram.com/ТВОЙ_НИК" target="_blank"
+                                rel="noopener noreferrer">Instagram</a></li>
+                        <li><a href="https://www.behance.net/ТВОЙ_НИК" target="_blank"
+                                rel="noopener noreferrer">Behance</a></li>
+                        <li><a href="https://www.linkedin.com/in/ТВОЙ_НИК" target="_blank"
+                                rel="noopener noreferrer">LinkedIn</a></li>
+                    </ul>
+                </nav>
+
+                <button class="burger" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
+                    <span class="burger-box">
+                        <span class="burger-line"></span>
+                        <span class="burger-line"></span>
+                        <span class="burger-line"></span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="portfolio" class="section">
+            <div class="container">
+                <h2>Portfolio</h2>
+                <p>Здесь позже будут карточки проектов.</p>
+            </div>
+        </section>
+
+        <section id="resume" class="section">
+            <div class="container">
+                <h2>Resume</h2>
+                <p>Здесь позже разместим опыт, навыки и кнопку “Download CV”.</p>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <div class="container">
+                <h2>Contact</h2>
+                <p>Тут будет форма/почта/социальные ссылки.</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        (function () {
+            const burger = document.querySelector('.burger');
+            const nav = document.getElementById('site-nav');
+
+            if (!burger || !nav) return;
+
+            // переключение меню
+            burger.addEventListener('click', () => {
+                const isOpen = nav.classList.toggle('is-open');
+                burger.setAttribute('aria-expanded', String(isOpen));
+                burger.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+            });
+
+            // закрыть меню при клике по ссылке
+            nav.addEventListener('click', (e) => {
+                if (e.target.matches('a')) {
+                    nav.classList.remove('is-open');
+                    burger.setAttribute('aria-expanded', 'false');
+                    burger.setAttribute('aria-label', 'Open menu');
+                }
+            });
+
+            // закрыть при клике вне меню (на мобильном)
+            document.addEventListener('click', (e) => {
+                const clickedInside = nav.contains(e.target) || burger.contains(e.target);
+                if (!clickedInside && nav.classList.contains('is-open')) {
+                    nav.classList.remove('is-open');
+                    burger.setAttribute('aria-expanded', 'false');
+                    burger.setAttribute('aria-label', 'Open menu');
+                }
+            });
+
+            // esc для закрытия (удобно и доступно)
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && nav.classList.contains('is-open')) {
+                    nav.classList.remove('is-open');
+                    burger.setAttribute('aria-expanded', 'false');
+                    burger.setAttribute('aria-label', 'Open menu');
+                }
+            });
+        })();
+
+
+        // === Подсветка активного пункта при скролле ===
+        const navLinks = Array.from(document.querySelectorAll('.nav a[href^="#"]'));
+        const sections = navLinks
+            .map(link => document.querySelector(link.getAttribute('href')))
+            .filter(Boolean);
+
+        // функция установки активного класса
+        function setActive(id) {
+            navLinks.forEach(a => {
+                const match = a.getAttribute('href') === `#${id}`;
+                a.classList.toggle('is-active', match);
+            });
+        }
+
+        // IntersectionObserver: отмечаем секцию, которая находится в центре вьюпорта
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) setActive(entry.target.id);
+            });
+        }, {
+            root: null,
+            threshold: 0.5,           // ~половина секции видна
+            rootMargin: '-20% 0px -20% 0px' // смещаем “фокус” чуть к середине
+        });
+
+        sections.forEach(sec => io.observe(sec));
+
+        // при клике по ссылке сразу подсветим соответствующий пункт
+        navLinks.forEach(a => {
+            a.addEventListener('click', () => {
+                const id = a.getAttribute('href').slice(1);
+                setActive(id);
+            });
+        });
+
+        // при загрузке страницы учтём якорь в URL, если есть
+        window.addEventListener('load', () => {
+            const id = location.hash?.slice(1);
+            if (id) setActive(id);
+        });
+    </script>
+
+
+
+</body>
+
+
+
+</html>
